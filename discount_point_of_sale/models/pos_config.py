@@ -3,7 +3,6 @@
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
-from odoo.osv.expression import OR
 
 
 class PosConfig(models.Model):
@@ -22,9 +21,17 @@ class PosConfig(models.Model):
     @api.model
     def _default_discount_value_on_module_install(self):
         configs = self.env['pos.config'].search([])
+        # NOTE (20.0 build): the original 17.0 domain also OR'ed in
+        # ('rescue', '=', True) to catch "rescue" sessions. Real-install
+        # testing on Odoo 20 found that pos.session.rescue no longer
+        # exists on this build, so it was dropped here - state != 'closed'
+        # already covers the actual safety requirement below (don't touch
+        # a config that has any non-closed session). If your Odoo 20
+        # install does have a pos.session.rescue (or differently named
+        # equivalent) field, add it back the same way.
         open_configs = (
             self.env['pos.session']
-            .search(['|', ('state', '!=', 'closed'), ('rescue', '=', True)])
+            .search([('state', '!=', 'closed')])
             .mapped('config_id')
         )
         # Do not modify configs where an opened session exists.
@@ -44,4 +51,10 @@ class PosConfig(models.Model):
 
     def _get_available_product_domain(self):
         domain = super()._get_available_product_domain()
-        return OR([domain, [('id', '=', self.discount_product_id.id)]])
+        # OR-combine with plain prefix-notation domain syntax instead of
+        # odoo.osv.expression.OR(): that helper (and the whole odoo.osv
+        # package) no longer exists in this Odoo 20 build - see the
+        # module description for details. Prefix notation ('|' followed
+        # by two complete, self-contained domains) needs no import and
+        # works the same on every Odoo version.
+        return ['|'] + domain + [('id', '=', self.discount_product_id.id)]
