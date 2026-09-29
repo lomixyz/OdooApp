@@ -1,0 +1,95 @@
+<div style="font-family: -apple-system, 'Segoe UI', Roboto, Arial, sans-serif; color: #1f2937; max-width: 1040px; margin: 0 auto;">
+
+  <div style="text-align: center; padding: 36px 16px 8px;">
+    <span style="display: inline-block; background-color: #ccfbf1; color: #0f766e; font-size: 12px; font-weight: 700; letter-spacing: .04em; padding: 6px 14px; border-radius: 999px; margin-bottom: 18px;">ODOO 17.0 &middot; COMMUNITY &amp; ENTERPRISE</span>
+    <h1 style="font-size: 34px; font-weight: 800; margin: 0; line-height: 1.25; color: #111827;">Point of Sale <span style="color: #0d9488;">Discount Amount</span></h1>
+    <p style="color: #4b5563; font-size: 16px; margin: 14px auto 0; max-width: 620px;">Give the whole order a fixed-amount discount straight from the POS screen &mdash; one tap, taxes stay correct, and the total can never go negative.</p>
+  </div>
+
+  <div style="margin: 22px 16px 0;">
+    <table style="width: 100%; border-collapse: collapse; background-color: #fffbeb; border: 1px solid #fde68a; border-radius: 14px;" cellpadding="0" cellspacing="0">
+      <tr>
+        <td style="padding: 18px 22px; vertical-align: top;">
+          <div style="font-size: 14.5px; font-weight: 800; color: #92400e; margin-bottom: 4px;">&#128161; This is an AMOUNT discount, not a percentage</div>
+          <div style="font-size: 13.5px; color: #78350f; line-height: 1.6;">Odoo's Point of Sale already has a built-in <b>Global Discount</b> feature, and it is <b>percentage-based</b> (e.g. 10% off). This module adds a separate, complementary <b>Discount Amount</b> button for cashiers who instead need to subtract a flat number (e.g. 10.00 off, in your store's currency) &mdash; useful for loyalty vouchers, rounding adjustments, or manager-approved fixed-value discounts that a percentage can't express cleanly. Both features can be enabled side by side; they do not replace or conflict with each other.</div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div style="padding: 40px 16px 8px;">
+    <h2 style="text-align: center; font-size: 24px; font-weight: 800; color: #111827; margin: 0 0 6px;">How it works</h2>
+    <p style="text-align: center; color: #6b7280; font-size: 14px; margin: 0 0 28px;">Three steps &mdash; the cashier never leaves the POS screen.</p>
+    <table style="width: 100%; border-collapse: separate; border-spacing: 10px 0;" cellpadding="0" cellspacing="0">
+      <tr>
+        <td style="width: 33.33%; vertical-align: top; background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 22px;">
+          <div style="width: 32px; height: 32px; line-height: 32px; text-align: center; border-radius: 999px; background-color: #ccfbf1; color: #0f766e; font-weight: 800; font-size: 14px; margin-bottom: 14px;">1</div>
+          <div style="font-size: 16px; font-weight: 700; color: #111827; margin-bottom: 8px;">Tap &ldquo;Discount Amount&rdquo;</div>
+          <div style="font-size: 13.5px; color: #4b5563; line-height: 1.55;">A single button on the POS order screen opens a numeric popup pre-filled with the configured default amount.</div>
+        </td>
+        <td style="width: 33.33%; vertical-align: top; background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 22px;">
+          <div style="width: 32px; height: 32px; line-height: 32px; text-align: center; border-radius: 999px; background-color: #ccfbf1; color: #0f766e; font-weight: 800; font-size: 14px; margin-bottom: 14px;">2</div>
+          <div style="font-size: 16px; font-weight: 700; color: #111827; margin-bottom: 8px;">Taxes are kept correct</div>
+          <div style="font-size: 13.5px; color: #4b5563; line-height: 1.55;">The amount is split across every distinct tax group on the order in proportion to its share of the total, so each tax total still reconciles.</div>
+        </td>
+        <td style="width: 33.33%; vertical-align: top; background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 22px;">
+          <div style="width: 32px; height: 32px; line-height: 32px; text-align: center; border-radius: 999px; background-color: #ccfbf1; color: #0f766e; font-weight: 800; font-size: 14px; margin-bottom: 14px;">3</div>
+          <div style="font-size: 16px; font-weight: 700; color: #111827; margin-bottom: 8px;">Adjust as many times as needed</div>
+          <div style="font-size: 13.5px; color: #4b5563; line-height: 1.55;">Tapping the button again replaces the previous discount line, so the cashier can freely correct the amount before payment.</div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div style="padding: 40px 16px 8px;">
+    <h2 style="text-align: center; font-size: 24px; font-weight: 800; color: #111827; margin: 0 0 28px;">Key features</h2>
+    <table style="width: 100%; border-collapse: separate; border-spacing: 10px 14px;" cellpadding="0" cellspacing="0">
+      <tr>
+        <td style="width: 50%; vertical-align: top; background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 20px 22px;">
+          <div style="font-size: 15px; font-weight: 700; color: #111827; margin-bottom: 8px;"><span style="color: #0d9488;">&#127991;&#65039;</span> Fixed-amount, not percentage</div>
+          <div style="font-size: 13.5px; color: #4b5563; line-height: 1.55;">Odoo's built-in Global Discounts are percentage-based. This adds a one-click alternative for a flat amount off &mdash; e.g. &ldquo;take 5 off the total&rdquo;.</div>
+        </td>
+        <td style="width: 50%; vertical-align: top; background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 20px 22px;">
+          <div style="font-size: 15px; font-weight: 700; color: #111827; margin-bottom: 8px;"><span style="color: #0d9488;">&#9878;&#65039;</span> Proportional tax-group split</div>
+          <div style="font-size: 13.5px; color: #4b5563; line-height: 1.55;">Orders mixing several tax rates are handled correctly &mdash; the discount is distributed across tax groups instead of being applied once per group.</div>
+        </td>
+      </tr>
+      <tr>
+        <td style="width: 50%; vertical-align: top; background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 20px 22px;">
+          <div style="font-size: 15px; font-weight: 700; color: #111827; margin-bottom: 8px;"><span style="color: #0d9488;">&#128737;&#65039;</span> Never goes negative</div>
+          <div style="font-size: 13.5px; color: #4b5563; line-height: 1.55;">The discount is automatically capped at the order's discountable subtotal, so a mistyped amount can't push the total below zero.</div>
+        </td>
+        <td style="width: 50%; vertical-align: top; background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 20px 22px;">
+          <div style="font-size: 15px; font-weight: 700; color: #111827; margin-bottom: 8px;"><span style="color: #0d9488;">&#128273;</span> One button, editable anytime</div>
+          <div style="font-size: 13.5px; color: #4b5563; line-height: 1.55;">Re-applying the discount replaces the previous line automatically, so the cashier can correct it right up until payment.</div>
+        </td>
+      </tr>
+      <tr>
+        <td style="width: 50%; vertical-align: top; background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 20px 22px;">
+          <div style="font-size: 15px; font-weight: 700; color: #111827; margin-bottom: 8px;"><span style="color: #0d9488;">&#9881;&#65039;</span> Per-POS configuration</div>
+          <div style="font-size: 13.5px; color: #4b5563; line-height: 1.55;">Enable it per point of sale, choose the discount product and set a default amount from Settings.</div>
+        </td>
+        <td style="width: 50%; vertical-align: top; background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 20px 22px;">
+          <div style="font-size: 15px; font-weight: 700; color: #111827; margin-bottom: 8px;"><span style="color: #0d9488;">&#9889;</span> Lightweight, no dependencies</div>
+          <div style="font-size: 13.5px; color: #4b5563; line-height: 1.55;">Depends only on Point of Sale &mdash; no external services, no extra apps required.</div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div style="background-color: #f0fdfa; border: 1px solid #99f6e4; border-radius: 14px; padding: 26px 28px; margin: 40px 16px 8px;">
+    <h2 style="font-size: 19px; font-weight: 800; color: #0f766e; margin: 0 0 14px;">&#9881;&#65039; Configuration</h2>
+    <ol style="margin: 0; padding-inline-start: 20px; color: #1f2937;">
+      <li style="font-size: 14px; margin-bottom: 8px; line-height: 1.6;">Install the module (depends on <b style="color: #111827;">Point of Sale</b>).</li>
+      <li style="font-size: 14px; margin-bottom: 8px; line-height: 1.6;">Go to <b style="color: #111827;">Point of Sale &gt; Configuration &gt; Settings</b> and enable <b style="color: #111827;">Global Discounts</b> on the point of sale you want it active on.</li>
+      <li style="font-size: 14px; margin-bottom: 8px; line-height: 1.6;">Set the <b style="color: #111827;">Discount Product</b> (must be sellable and available in Point of Sale) and the default <b style="color: #111827;">Discount Amount</b>.</li>
+      <li style="font-size: 14px; margin-bottom: 8px; line-height: 1.6;">Open a POS session &mdash; the <b style="color: #111827;">Discount Amount</b> button now appears on the order screen.</li>
+    </ol>
+  </div>
+
+  <div style="text-align: center; padding: 34px 16px 20px; color: #6b7280; font-size: 13px; border-top: 1px solid #e5e7eb; margin-top: 30px;">
+    Developed by <b style="color: #111827;">Allam Bushra</b> &mdash; Odoo Techno-Functional Consultant<br/>
+    <a href="https://www.linkedin.com/in/lomixyz/" target="_blank" rel="noopener" style="color: #0d9488; text-decoration: none; font-weight: 600;">linkedin.com/in/lomixyz</a>
+  </div>
+
+</div>

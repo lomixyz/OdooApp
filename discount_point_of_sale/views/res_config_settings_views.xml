@@ -5,18 +5,58 @@
         <field name="model">res.config.settings</field>
         <field name="inherit_id" ref="point_of_sale.res_config_settings_view_form" />
         <field name="arch" type="xml">
-            <xpath expr="//form" position="inside">
-            <div id="warning_text_pos_discount" position="replace">
-                <div class="row">
-                    <label string="Discount Product" for="pos_discount_product_id" class="col-lg-3 o_light_label"/>
-                    <field name="pos_discount_product_id" />
-<!--                    required="pos_module_pos_discount"-->
+            <!-- NOTE (history): an earlier version of this view used
+                 position="replace" on the built-in
+                 div#warning_text_pos_discount to inject the fields below
+                 in its place. That div belongs to Odoo's own core
+                 "pos_discount" module (the standard PERCENTAGE-based
+                 Global Discount feature) and gets re-applied every time
+                 pos_discount is (re)installed - e.g. when the user also
+                 turns the standard "Global Discounts" checkbox on. Since
+                 our replace had already removed that div, pos_discount's
+                 own view inheritance then failed with "Element
+                 <div id="warning_text_pos_discount"> cannot be located in
+                 parent view" as soon as both features were used together.
+
+                 Fixed by no longer touching that div at all: we now
+                 insert our own, completely separate block right AFTER it
+                 with position="after", under its own dedicated toggle
+                 (pos_iface_discount_amount / pos.config.iface_discount_amount),
+                 so the AMOUNT discount (this module) and Odoo's built-in
+                 PERCENTAGE discount (pos_discount) are two independent
+                 features that can both be enabled at once, each showing
+                 its own button on the POS screen when active. -->
+            <!-- Tried inserting this as a fully separate "o_setting_box"
+                 tile (sibling of the Global Discounts tile) via
+                 ancestor::div[hasclass('o_setting_box')], but that xpath
+                 could not be located on a real install - the exact DOM
+                 nesting of point_of_sale's settings view is not something
+                 we have verified source for, so guessing at another
+                 ancestor selector risks breaking the install again the
+                 same way. Falling back to the one anchor point we KNOW
+                 exists and installs cleanly - div#warning_text_pos_discount
+                 itself - and instead making the visual separation clear
+                 with a top border, spacing and its own mini-heading, so
+                 this reads as a distinct sub-section rather than a
+                 continuation of the Global Discounts fields above it. -->
+            <xpath expr="//div[@id='warning_text_pos_discount']" position="after">
+                <div class="mt16 pt16" style="border-top: 1px solid #dee2e6;" id="pos_discount_amount_setting">
+                    <div class="row">
+                        <label string="Discount Amount" for="pos_iface_discount_amount" class="col-lg-4 o_light_label" style="font-weight: 600;"/>
+                        <field name="pos_iface_discount_amount"/>
+                    </div>
+                    <div class="text-muted" style="margin-bottom: 8px;">
+                        Adds a SEPARATE button to give a fixed-AMOUNT discount on the whole order (not a percentage - independent from Global Discounts above)
+                    </div>
+                    <div class="row" invisible="not pos_iface_discount_amount">
+                        <label string="Amount Discount Product" for="pos_discount_product_id" class="col-lg-4 o_light_label"/>
+                        <field name="pos_discount_product_id" required="pos_iface_discount_amount"/>
+                    </div>
+                    <div class="row" invisible="not pos_iface_discount_amount">
+                        <label string="Default Discount Amount" for="pos_discount_amount" class="col-lg-4 o_light_label"/>
+                        <field name="pos_discount_amount"/>
+                    </div>
                 </div>
-                <div class="row">
-                    <label string="Discount Amount" for="pos_discount_amount" class="col-lg-3 o_light_label"/>
-                    <field name="pos_discount_amount"/>
-                </div>
-            </div>
             </xpath>
         </field>
     </record>

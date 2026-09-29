@@ -23,9 +23,8 @@ export class DiscountPoSFixed extends Component {
             startingValue: this.pos.config.pos_discount_amount,
             isInputSelected: true,
         });
-//        Math.max(0, Math.min(100,))
         if (confirmed) {
-            const val =  parseFloat(payload);
+            const val = Math.max(0, parseFloat(payload) || 0);
             await self.apply_discount(val);
         }
     }
@@ -49,9 +48,18 @@ export class DiscountPoSFixed extends Component {
             .filter((line) => line.get_product() === product)
             .forEach((line) => order._unlinkOrderline(line));
 
-        // Add one discount line per tax group
+        if (amount <= 0) {
+            return;
+        }
+
+        // Group the order lines by tax group and compute each group's
+        // discountable base first, so we can split the requested amount
+        // proportionally across tax groups (instead of applying the full
+        // amount once per group, which would over-discount any order that
+        // spans more than one tax group).
         const linesByTax = order.get_orderlines_grouped_by_tax_ids();
-        for (const [tax_ids, lines] of Object.entries(linesByTax)) {
+        const groups = [];
+        for (const [tax_ids, taxLines] of Object.entries(linesByTax)) {
             // Note that tax_ids_array is an Array of tax_ids that apply to these lines
             // That is, the use case of products with more than one tax is supported.
             const tax_ids_array = tax_ids
@@ -61,11 +69,27 @@ export class DiscountPoSFixed extends Component {
 
             const baseToDiscount = order.calculate_base_amount(
                 tax_ids_array,
-                lines.filter((ll) => ll.isGlobalDiscountApplicable())
+                taxLines.filter((ll) => ll.isGlobalDiscountApplicable())
             );
 
+            if (baseToDiscount > 0) {
+                groups.push({ baseToDiscount });
+            }
+        }
+
+        const totalBase = groups.reduce((sum, group) => sum + group.baseToDiscount, 0);
+        if (totalBase <= 0) {
+            return;
+        }
+
+        // Never let the discount exceed the order's total discountable
+        // subtotal, so the order total can't go negative by mistake.
+        const cappedAmount = Math.min(amount, totalBase);
+
+        for (const group of groups) {
             // We add the price as manually set to avoid recomputation when changing customer.
-            const discount = - amount;
+            const share = cappedAmount * (group.baseToDiscount / totalBase);
+            const discount = -share;
             if (discount < 0) {
                 order.add_product(product, {
                     price: discount,
@@ -80,7 +104,12 @@ export class DiscountPoSFixed extends Component {
 ProductScreen.addControlButton({
     component: DiscountPoSFixed,
     condition: function () {
-        const { module_pos_discount, discount_product_id } = this.pos.config;
-        return module_pos_discount && discount_product_id;
+        // iface_discount_amount is this module's own dedicated toggle -
+        // deliberately independent of module_pos_discount (Odoo's
+        // standard PERCENTAGE-based Global Discount checkbox), so the two
+        // discount buttons can be shown/hidden independently of each
+        // other: enable one, the other, or both.
+        const { iface_discount_amount, discount_product_id } = this.pos.config;
+        return iface_discount_amount && discount_product_id;
     },
 });

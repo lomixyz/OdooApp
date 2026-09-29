@@ -9,7 +9,12 @@ from odoo.osv.expression import OR
 class PosConfig(models.Model):
     _inherit = 'pos.config'
 
-    iface_discount_amount = fields.Boolean(string='Order Discounts', help='Allow the cashier to give discounts on the whole order.')
+    # Dedicated toggle for THIS module's fixed-amount discount button - kept
+    # fully independent of the standard module_pos_discount field (that one
+    # belongs to Odoo's own core "pos_discount" app, the PERCENTAGE-based
+    # Global Discount). Keeping them separate lets a POS enable the amount
+    # button, the percentage button, both, or neither, independently.
+    iface_discount_amount = fields.Boolean(string='Discount Amount', help='Allow the cashier to give a fixed-amount discount on the whole order.')
     discount_amount = fields.Float(string='Discount Amount', help='The default discount Amount when clicking on the Discount button', default=10.0)
     discount_product_id = fields.Many2one('product.product', string='Discount Product',
         domain="[('sale_ok', '=', True)]", help='The product used to apply the discount on the ticket.')
@@ -25,12 +30,12 @@ class PosConfig(models.Model):
         # Do not modify configs where an opened session exists.
         product = self.env.ref("point_of_sale.product_product_consumable", raise_if_not_found=False)
         for conf in (configs - open_configs):
-            conf.discount_product_id = product if conf.module_pos_discount and product and (not product.company_id or product.company_id == conf.company_id) else False
+            conf.discount_product_id = product if conf.iface_discount_amount and product and (not product.company_id or product.company_id == conf.company_id) else False
 
     def open_ui(self):
         for config in self:
-            if not self.current_session_id and config.module_pos_discount and not config.discount_product_id:
-                raise UserError(_('A discount product is needed to use the Global Discount feature. Go to Point of Sale > Configuration > Settings to set it.'))
+            if not self.current_session_id and config.iface_discount_amount and not config.discount_product_id:
+                raise UserError(_('A discount product is needed to use the Discount Amount feature. Go to Point of Sale > Configuration > Settings to set it.'))
         return super().open_ui()
 
     def _get_special_products(self):
